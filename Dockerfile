@@ -9,7 +9,9 @@ RUN pip install gunicorn psycopg2
 
 COPY flaskapp flaskapp
 COPY config.py manage.py ./
+RUN chmod +x boot.sh
 
 ENV FLASK_APP manage.py
 
-CMD gunicorn -b 0.0.0.0:$PORT --access-logfile - --error-logfile - manage:app
+RUN CHMOD
+ENTRYPOINT ['./boot.sh']
