@@ -1,6 +1,5 @@
 from marshmallow import Schema, fields, validate, post_load
 
-from flaskapp import guard
 from flaskapp.models.Model import User
 from werkzeug.security import generate_password_hash
 
