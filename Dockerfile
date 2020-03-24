@@ -8,8 +8,7 @@ RUN pip install -r requirements.txt
 RUN pip install gunicorn psycopg2
 
 COPY flaskapp flaskapp
-COPY config.py manage.py boot.sh ./
-RUN chmod +x boot.sh
+COPY config.py manage.py ./
 
 ENV FLASK_APP manage.py
 
