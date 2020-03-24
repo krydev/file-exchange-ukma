@@ -1,6 +1,5 @@
 Flask==1.1.1
 Flask-RESTful==0.3.8
-flask-praetorian==1.0.0
 Flask-JWT-Extended==3.24.1
 Flask-Cors==3.0.8
 Flask-Bootstrap==3.3.7.1

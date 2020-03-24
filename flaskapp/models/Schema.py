@@ -2,6 +2,7 @@ from marshmallow import Schema, fields, validate, post_load
 
 from flaskapp import guard
 from flaskapp.models.Model import User
+from werkzeug.security import generate_password_hash
 
 
 class UserSchema(Schema):
@@ -11,7 +12,7 @@ class UserSchema(Schema):
 
     @post_load
     def make_user(self, data, **kwargs):
-        data['password'] = guard.hash_password(data['password'])
+        data['password'] = generate_password_hash(data['password'])
         return User(**data)
 
 

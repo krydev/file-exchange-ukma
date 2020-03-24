@@ -2,6 +2,8 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
+from werkzeug.security import check_password_hash
+
 from flaskapp import db
 
 #
@@ -42,6 +44,9 @@ class User(db.Model):
     @property
     def identity(self):
         return self.id
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return f'User<email={self.email}>'

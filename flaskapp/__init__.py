@@ -2,11 +2,9 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_jwt_extended import JWTManager, get_current_user
 from flask_sqlalchemy import SQLAlchemy
-import flask_praetorian as fp
 import flask_cors
 
 db = SQLAlchemy()
-guard = fp.Praetorian()
 cors = flask_cors.CORS()
 jwt = JWTManager()
 
@@ -40,7 +38,6 @@ def create_app(config_path='config.Config'):
         app.jinja_env.filters['strip_domain'] = strip_domain
 
         from flaskapp.models.Model import User
-        guard.init_app(app, User)
         db.create_all()
         db.session.commit()
 
