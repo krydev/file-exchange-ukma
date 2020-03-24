@@ -2,6 +2,7 @@ import base64
 import uuid
 
 import arrow
+import requests
 
 from flask import current_app as app
 
@@ -41,3 +42,31 @@ def datetimeformat(date, past=True):
 
 def strip_domain(email):
     return email.split('@')[0]
+
+
+def request_json(verb='GET', **kwargs):
+    resp = requests.request(verb, **kwargs)
+    print(resp.content)
+    try:
+        res = resp.json()
+    except ValueError:
+        res = "{}"
+    return res
+
+
+def file_summary(obj_summary):
+    return {'key': encode_key(obj_summary.key),
+     'file_name': extract_file_name(obj_summary.key),
+     'size': humansize(int(obj_summary.size)),
+     'last_modified': datetimeformat(obj_summary.last_modified)
+     }
+
+
+suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+def humansize(nbytes):
+    i = 0
+    while nbytes >= 1024 and i < len(suffixes)-1:
+        nbytes /= 1024.
+        i += 1
+    f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
+    return '%s %s' % (f, suffixes[i])

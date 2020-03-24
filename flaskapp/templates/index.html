@@ -12,44 +12,26 @@
     <form class="upload-form" action="{{ url_for('user_files.upload_file') }}"
           method="POST" enctype="multipart/form-data">
         <p>
-            <input name="csrf_token" type="hidden" value="{{ csrf_token }}">
-            <label for="file">Max size is {{ max_size / 10**6}} mb</label>
+            <input name="csrf_token" type="hidden" id="csrf" value="{{ csrf_token }}">
+            <label for="file">Max size is {{ max_size }}</label>
             <input type="file" id="file" name="file">
         </p>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>
     <hr>
 
-    <table class="table table-striped">
-    <tr>
+    <table class="table table-striped" id="mainTable">
+    <tr id="0">
         <th>Filename</th>
         <th>Size</th>
         <th>Last Modified</th>
         <th></th>
     </tr>
-    {% for f in files %}
-    <tr>
-        <td>{{ f.file_name }}</td>
-        <td>{{ f.size }} mb</td>
-        <td>{{ f.last_modified | datetimeformat }}</td>
-        <td class="td-buttons">
-            <form class="delete-form" action="{{ url_for('user_files.delete_file', key=f.key) }}"
-                  method="POST">
-                <input name="csrf_token" type="hidden" value="{{ csrf_token }}">
-              <button type="submit" class="btn btn-danger btn-sm">
-                  <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </form>
-            <form class="download-form" action="{{ url_for('user_files.download_file', key=f.key) }}"
-                  method="GET">
-              <button type="submit" class="btn btn-default btn-sm">
-                  <span class="glyphicon glyphicon-download-alt"></span>
-              </button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
     </table>
 </div>
 </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 {% endblock %}

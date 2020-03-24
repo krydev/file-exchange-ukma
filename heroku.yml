@@ -4,3 +4,7 @@ setup:
 build:
  docker:
    web: ./Dockerfile
+run:
+  worker:
+    command:
+      - python worker.py

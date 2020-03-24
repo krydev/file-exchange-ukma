@@ -26,4 +26,4 @@ class Config(object):
                                 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    MAX_FILE_SIZE = 10**7 # 10 mb = 10**7
+    MAX_FILE_SIZE = 10485760 # 10 mb = 10**7

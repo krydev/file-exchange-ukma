@@ -22,11 +22,7 @@ class FileListRes(Resource):
     def get(self):
         s3_resource = session.resource("s3")
         my_bucket = s3_resource.Bucket(app.config["S3_BUCKET"])
-        fl = [{'key': utils.encode_key(f.key),
-                'file_name': utils.extract_file_name(f.key),
-                'size': round(f.size/ float(10**6), 2),
-                'last_modified': f.last_modified
-             } for f in my_bucket.objects.filter(Prefix=f"{get_jwt_identity()}/")]
+        fl = [utils.file_summary(f) for f in my_bucket.objects.filter(Prefix=f"{get_jwt_identity()}/")]
         return {'file_list': json.dumps(fl, default=str)}
 
 
@@ -53,13 +49,15 @@ class FileRes(Resource):
         object_name = utils.decode_key(key)
         file = request.files["file"]
         s3 = session.client("s3")
+        s3_resource = session.resource("s3")
         try:
             # file.seek(0)
             s3.put_object(Body=file, Bucket=app.config["S3_BUCKET"], Key=object_name,
                           ContentDisposition=f"attachment; filename=\"{file.filename}\"")
         except ClientError:
             return {'error': 'There was an internal error.'}, 500
-        return {}, 201
+        summary = s3_resource.ObjectSummary(app.config["S3_BUCKET"], object_name)
+        return {'file_list': json.dumps([utils.file_summary(summary)])}, 201
 
     def delete(self, key):
         object_name = utils.decode_key(key)
