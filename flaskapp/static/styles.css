@@ -1,0 +1,11 @@
+.td-buttons form {
+  display: inline-block;
+}
+@media (min-width: 1200px) {
+    .container{
+        max-width: 970px;
+    }
+}
+nav {
+    padding-right: 30px;
+}

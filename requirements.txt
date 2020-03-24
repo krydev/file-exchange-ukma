@@ -1,0 +1,11 @@
+Flask==1.1.1
+Flask-RESTful==0.3.8
+flask-praetorian==1.0.0
+Flask-JWT-Extended==3.24.1
+Flask-Cors==3.0.8
+Flask-Bootstrap==3.3.7.1
+Flask-SQLAlchemy==2.4.0
+requests==2.22.0
+marshmallow==3.5.1
+boto3==1.12.16
+arrow==0.15.5
