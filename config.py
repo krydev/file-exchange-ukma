@@ -7,7 +7,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
-    BASE_URL = 'https://file-exchange-ukma.herokuapp.com/'
+    BASE_URL = 'https://file-exchange-ukma.herokuapp.com'
 
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_REFRESH_COOKIE_PATH = '/token/refresh'
