@@ -4,3 +4,9 @@ setup:
 build:
  docker:
    web: ./Dockerfile
+run:
+  web: gunicorn -b 0.0.0.0:$PORT --access-logfile - --error-logfile - manage:app
+  worker:
+    command:
+      - python myworker.py
+    image: web
