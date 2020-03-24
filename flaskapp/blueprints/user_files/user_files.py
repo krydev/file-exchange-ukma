@@ -21,7 +21,8 @@ from flaskapp.utils import generate_uuid_str
 @jwt_required
 def list_files():
     summaries = requests.get(f'{app.config["BASE_URL"]}{api.url_for(FileListRes)}',
-                             cookies=request.cookies).json()
+                             cookies=request.cookies,
+                             headers={'Content-Type': 'application/json'}).json()
     headers = {'Content-Type': 'text/html'}
     return make_response(
         render_template('index.html',
@@ -76,7 +77,8 @@ def upload_file():
 def download_file(key):
     # uuid.UUID(file_id)
     resp = requests.get(f'{app.config["BASE_URL"]}{api.url_for(FileRes, key=key)}',
-                        cookies=request.cookies).json()
+                        cookies=request.cookies,
+                        headers={'Content-Type': 'application/json'}).json()
     if resp.get('error'):
         flash('File has expired or doesn\'t exist', 'danger')
         return redirect("/")
