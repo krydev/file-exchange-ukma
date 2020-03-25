@@ -1,4 +1,7 @@
+import sys
+
 from flask import Flask
+import logging
 from flask_bootstrap import Bootstrap
 from flask_jwt_extended import JWTManager, get_current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +18,8 @@ q = Queue(connection=conn)
 
 def create_app(config_path='config.Config'):
     app = Flask(__name__)
+    app.logger.addHandler(logging.StreamHandler(sys.stdout))
+    app.logger.setLevel(logging.ERROR)
     app.config.from_object(config_path)
     Bootstrap(app)
 
