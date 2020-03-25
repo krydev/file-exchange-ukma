@@ -1,6 +1,0 @@
-.gitignore
-__pycache__/
-.env
-.flaskenv
-run-daemon.sh
-add-vars.sh
