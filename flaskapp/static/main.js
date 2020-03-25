@@ -1,6 +1,6 @@
 $(function(){
 if (window.location.href.includes('#upload')){
-    showFlash('File has been uploaded successfully', 'info');
+    showFlash('File has been uploaded successfully', 'success');
 }
 
 
@@ -73,6 +73,16 @@ function uploadFile(resp, formId){
         processData: false,
         contentType: false,
         resetForm: true,
+        xhr: function(){
+            var xhr = $.ajaxSettings.xhr();
+            xhr.upload.addEventListener('progress', function(evt){
+              if(evt.lengthComputable) {
+                var percentComplete = Math.ceil(evt.loaded / evt.total * 100);
+                showFlash('Uploading ' + percentComplete + '%', 'info');
+              }
+            }, false);
+            return xhr;
+        },
         success: function (res) {
             var currUrl = window.location.href;
             var idx = currUrl.indexOf( "#upload" );
@@ -137,7 +147,7 @@ function getTaskResult(taskID, dataUpdater, formId) {
                 showFlash(res.data.error, 'danger');
             } else {
                 if (res.data.hasOwnProperty('success')){
-                    showFlash(res.data.success, 'info');
+                    showFlash(res.data.success, 'success');
                 }
                 dataUpdater(res, formId);
             }

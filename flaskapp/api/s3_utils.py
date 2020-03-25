@@ -78,18 +78,3 @@ class FileRes(Resource):
             return {'error': 'File not found.'}, 404
 
         return {}, 204
-
-
-        # object_name = utils.decode_key(key)
-        # file = request.files["file"]
-        # s3 = session.client("s3", config = Config(signature_version = 's3v4'))
-        # s3_resource = session.resource("s3")
-        # try:
-        #     # file.seek(0)
-        #     s3.put_object(Body=file, Bucket=app.config["S3_BUCKET"], Key=object_name,
-        #                   ContentDisposition=f"attachment; filename=\"{file.filename}\"")
-        # except ClientError:
-        #     return {'error': 'There was an internal error.'}, 500
-        # summary = s3_resource.ObjectSummary(app.config["S3_BUCKET"], object_name)
-        # return {'success': 'File has been uploaded successfully',
-        #         'file_list': json.dumps([utils.file_summary(summary)])}, 201

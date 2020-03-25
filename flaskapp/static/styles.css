@@ -10,6 +10,6 @@ nav {
     padding-right: 30px;
 }
 
-.bg-danger, .bg-info {
+.bg-danger, .bg-info, .bg-success{
     padding: 15px;
 }
