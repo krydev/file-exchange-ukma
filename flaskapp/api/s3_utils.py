@@ -55,13 +55,13 @@ class FileRes(Resource):
         fields = {
                 'acl': 'private',
                 'Content-Type': request.form['fileType'],
-                'ContentDisposition': f'attachment; filename="{request.form["fileName"]}"'
+                'Content-Disposition': f'attachment; filename="{request.form["fileName"]}"'
             }
         response = s3.generate_presigned_post(
             Bucket=app.config['S3_BUCKET'],
             Key=object_name,
             Fields=fields,
-            Conditions=[{'acl': 'private'}, {'Content-Type': request.form['fileType']}],
+            Conditions=[{item[0]: item[1]} for item in fields.items()],
             ExpiresIn=3600
         )
         print(response)
