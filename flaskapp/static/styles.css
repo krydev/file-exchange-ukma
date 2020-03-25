@@ -9,3 +9,7 @@
 nav {
     padding-right: 30px;
 }
+
+.bg-danger, .bg-info {
+    padding: 15px;
+}

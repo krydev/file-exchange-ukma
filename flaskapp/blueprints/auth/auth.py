@@ -72,9 +72,9 @@ def logout():
     return resp
 
 
-# @jwt.unauthorized_loader
-# def unauthorized_callback(callback):
-#     return redirect(url_for('auth.login'), 302)
+@jwt.unauthorized_loader
+def unauthorized_callback(callback):
+    return redirect(url_for('auth.login'), 302)
 
 
 @jwt.invalid_token_loader

@@ -33,19 +33,21 @@
 
 {% block content %}
 <div class="container">
-<header>
-    {% block header %}{% endblock %}
-</header>
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="bg-{{ category }}" id="flash-box" style="padding: 15px;">
-            {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-{% endwith %}
-<hr>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    <div id="flash-box">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <p class="bg-{{ category }}">
+                    {{ message }}
+                </p>
+              {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <hr>
+    </div>
 </div>
 {% endblock %}
 {% block scripts %}

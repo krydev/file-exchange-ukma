@@ -1,5 +1,12 @@
 $(function(){
 
+function showFlash(msg, type) {
+    $('#flash-box').html(`
+        <p class="bg-${type}">${msg}</p>
+    `)
+}
+
+
 $.ajax({
     url: "/myfiles",
     method: 'GET'
@@ -9,8 +16,11 @@ $.ajax({
     });
 
 $('.upload-form').ajaxForm({
+    error: function(res){
+        showFlash(JSON.parse(res.responseText).error, 'danger');
+    },
     success: function(res) {
-          getTaskResult(res.task_id, showUpdData)
+        getTaskResult(res.task_id, showUpdData);
     }
 });
 
@@ -21,7 +31,6 @@ $(document).on("submit", ".delete-form", function() {
             elemId = $form.parent().parent().attr('id');
         },
         success: function(res) {
-            console.log(elemId);
             getTaskResult(res.task_id, updDeletedData, elemId)
         }
     });
@@ -31,30 +40,12 @@ $(document).on("submit", ".delete-form", function() {
 $(document).on("submit", ".download-form", function() {
     $(this).ajaxSubmit({
         success: function(res) {
-            console.log('Going to dowwonload');
             getTaskResult(res.task_id, goToDownload)
         }
     });
     return false;
 });
 
-
-// $('.delete-form').ajaxForm({
-//     beforeSerialize: function($form, options) {
-//         elemId = $form.parent().parent().attr('id');
-//     },
-//     success: function(res) {
-//         console.log(elemId);
-//         getTaskResult(res.task_id, updDeletedData, elemId)
-//     }
-// });
-//
-// $('.download-form').ajaxForm({
-//     success: function(res) {
-//         console.log('Going to dowwonload');
-//         getTaskResult(res.task_id, goToDownload)
-//     }
-// });
 
 function goToDownload(resp, elemId) {
     try {window.location.replace(resp.data.url);}
@@ -102,7 +93,14 @@ function getTaskResult(taskID, dataUpdater, formId) {
     method: 'GET',
     statusCode: {
         200: function (res) {
-            dataUpdater(res, formId);
+            if (res.data.hasOwnProperty('error')){
+                showFlash(res.data.error, 'danger');
+            } else {
+                if (res.data.hasOwnProperty('success')){
+                    showFlash(res.data.success, 'info');
+                }
+                dataUpdater(res, formId);
+            }
         },
         202: function (res) {
             setTimeout(function() {

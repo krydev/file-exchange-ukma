@@ -5,10 +5,9 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 # load_dotenv(os.path.join(basedir, '.env'))
 
-
 class Config(object):
     BASE_URL = 'https://file-exchange-ukma.herokuapp.com'
-
+    # BASE_URL = 'http://localhost:5000'
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_REFRESH_COOKIE_PATH = '/token/refresh'
     JWT_CSRF_CHECK_FORM = True

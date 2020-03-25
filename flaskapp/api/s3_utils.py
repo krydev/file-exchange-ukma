@@ -57,7 +57,8 @@ class FileRes(Resource):
         except ClientError:
             return {'error': 'There was an internal error.'}, 500
         summary = s3_resource.ObjectSummary(app.config["S3_BUCKET"], object_name)
-        return {'file_list': json.dumps([utils.file_summary(summary)])}, 201
+        return {'success': 'File has been uploaded successfully',
+                'file_list': json.dumps([utils.file_summary(summary)])}, 201
 
     def delete(self, key):
         object_name = utils.decode_key(key)

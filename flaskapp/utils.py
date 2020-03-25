@@ -1,4 +1,5 @@
 import base64
+import json
 import uuid
 
 import arrow
@@ -50,15 +51,16 @@ def request_json(verb='GET', **kwargs):
     try:
         res = resp.json()
     except ValueError:
-        res = "{}"
+        res = {'success': 'File deleted successfully'}
     return res
 
 
 def file_summary(obj_summary):
-    return {'key': encode_key(obj_summary.key),
-     'file_name': extract_file_name(obj_summary.key),
-     'size': humansize(int(obj_summary.size)),
-     'last_modified': datetimeformat(obj_summary.last_modified)
+    return {
+        'key': encode_key(obj_summary.key),
+        'file_name': extract_file_name(obj_summary.key),
+        'size': humansize(int(obj_summary.size)),
+        'last_modified': datetimeformat(obj_summary.last_modified)
      }
 
 
