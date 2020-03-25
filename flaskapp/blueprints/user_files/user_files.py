@@ -57,8 +57,6 @@ def upload_file():
     # file.seek(0)
     job = q.enqueue(utils.request_json,'PUT',
                     url=f'{app.config["BASE_URL"]}{api.url_for(FileRes, key=object_name)}',
-                    files={'file': (file.filename, file.read(),
-                            file.content_type, file.headers)},
                     data=request.form, cookies=request.cookies)
     return jsonify({'task_id': job.get_id()}), 202
 

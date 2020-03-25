@@ -47,7 +47,6 @@ def strip_domain(email):
 
 def request_json(verb='GET', **kwargs):
     resp = requests.request(verb, **kwargs)
-    print(resp.content)
     try:
         res = resp.json()
     except ValueError:

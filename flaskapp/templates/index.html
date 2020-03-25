@@ -10,11 +10,18 @@
 <div class="col-12-xs">
 
     <form class="upload-form" action="{{ url_for('user_files.upload_file') }}"
-          method="POST" enctype="multipart/form-data">
+          method="POST" enctype="multipart/form-data" id="upload-form">
         <p>
             <input name="csrf_token" type="hidden" id="csrf" value="{{ csrf_token }}">
             <label for="file">Max size is {{ max_size }}</label>
-            <input name="fileSize" type="hidden" id="fileSize" value="">
+            <input type="hidden" name="Content-Type" value="" >
+            <input type="hidden" name="acl" value="" >
+            <input type="hidden" name="policy" value="" >
+            <input type="hidden" name="x-amz-credential" value="" />
+            <input type="hidden" name="x-amz-algorithm" value="" >
+            <input type="hidden" name="x-amz-date" value="" />
+            <input type="hidden" name="x-amz-signature" value="" />
+            <input type="hidden" name="key" value="" />
             <input type="file" id="file" name="file">
         </p>
         <button type="submit" class="btn btn-primary">Upload</button>

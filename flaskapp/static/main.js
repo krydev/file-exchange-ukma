@@ -1,8 +1,8 @@
 $(function(){
+if (window.location.href.includes('#upload')){
+    showFlash('File has been uploaded successfully', 'info');
+}
 
-$('#file').on('change', function() {
-    $('#fileSize').val(this.files[0].size);
-});
 
 function showFlash(msg, type) {
     $('#flash-box').html(`
@@ -19,14 +19,22 @@ $.ajax({
         getTaskResult(res.task_id, showUpdData)
     });
 
-$('.upload-form').ajaxForm({
-    error: function(res){
-        showFlash(JSON.parse(res.responseText).error, 'danger');
-    },
-    success: function(res) {
-        getTaskResult(res.task_id, showUpdData);
-    }
+
+$(document).on("submit", "#upload-form", function() {
+    var file = ($('#file'))[0].files[0];
+    $(this).ajaxSubmit({
+        data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name},
+        error: function(res){
+            showFlash(JSON.parse(res.responseText).error, 'danger');
+        },
+        success: function(res) {
+            getTaskResult(res.task_id, uploadFile);
+        }
+    });
+    return false;
+
 });
+
 
 var elemId;
 $(document).on("submit", ".delete-form", function() {
@@ -51,9 +59,37 @@ $(document).on("submit", ".download-form", function() {
 });
 
 
+function uploadFile(resp, formId){
+    // populating signature fields
+    $('#upload-form input[name="csrf_token"]').remove();
+    for(key in resp.data.fields){
+        var $sel = $('input[name="'+key+'"]');
+        if ($sel.length){
+            $sel.val(resp.data.fields[key]);
+        }
+    }
+    $('#upload-form').ajaxSubmit({
+        url: resp.data.url,
+        processData: false,
+        contentType: false,
+        resetForm: true,
+        success: function (res) {
+            var currUrl = window.location.href;
+            var idx = currUrl.indexOf( "#upload" );
+            if (idx !== -1){
+                currUrl = currUrl.substring(0, idx)
+            }
+            window.location = currUrl + "#upload";
+            window.location.reload();
+        },
+        error: function (xhr) {
+            console.log('Upload error: ' + xhr.responseText);
+        }
+    });
+}
+
 function goToDownload(resp, elemId) {
-    try {window.location.replace(resp.data.url);}
-    catch(e) { window.location = resp.data.url; }
+    window.open(resp.data.url);
 }
 
 function updDeletedData(resp, elemId){
