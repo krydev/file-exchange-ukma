@@ -1,5 +1,9 @@
 $(function(){
 
+$('#file').on('change', function() {
+    $('#fileSize').val(this.files[0].size);
+});
+
 function showFlash(msg, type) {
     $('#flash-box').html(`
         <p class="bg-${type}">${msg}</p>

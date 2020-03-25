@@ -14,6 +14,7 @@
         <p>
             <input name="csrf_token" type="hidden" id="csrf" value="{{ csrf_token }}">
             <label for="file">Max size is {{ max_size }}</label>
+            <input name="fileSize" type="hidden" id="fileSize" value="">
             <input type="file" id="file" name="file">
         </p>
         <button type="submit" class="btn btn-primary">Upload</button>
