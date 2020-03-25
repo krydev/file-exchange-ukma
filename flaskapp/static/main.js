@@ -22,15 +22,19 @@ $.ajax({
 
 $(document).on("submit", "#upload-form", function() {
     var file = ($('#file'))[0].files[0];
-    $(this).ajaxSubmit({
-        data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name},
-        error: function(res){
-            showFlash(JSON.parse(res.responseText).error, 'danger');
-        },
-        success: function(res) {
-            getTaskResult(res.task_id, uploadFile);
-        }
-    });
+    if (!file) {
+        showFlash('File hasn\'t been selected', 'danger');
+    } else {
+        $(this).ajaxSubmit({
+            data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name},
+            error: function (res) {
+                showFlash(JSON.parse(res.responseText).error, 'danger');
+            },
+            success: function (res) {
+                getTaskResult(res.task_id, uploadFile);
+            }
+        });
+    }
     return false;
 
 });
