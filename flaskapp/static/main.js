@@ -28,12 +28,17 @@ $(document).on("submit", "#upload-form", function() {
         $form = $(this);
         $.ajax({
             type: $form.attr('method'),
-            url: $form.attr('action')
-            data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name}
-        }).fail(function (res) {
-                showFlash(JSON.parse(res.responseText).error, 'danger');
+            url: $form.attr('action'),
+            data: {
+                'fileSize': file.size,
+                 'fileType': file.type, 
+                 'fileName': file.name, 
+                 'csrf_token': $('#csrf').val()
+             }
         }).done(function (res) {
                 getTaskResult(res.task_id, uploadFile);
+        }).fail(function (res) {
+                showFlash(JSON.parse(res.responseText).error, 'danger');
         });
     }
     return false;
