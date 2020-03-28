@@ -25,14 +25,15 @@ $(document).on("submit", "#upload-form", function() {
     if (!file) {
         showFlash('File hasn\'t been selected', 'danger');
     } else {
-        $(this).ajaxSubmit({
-            data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name},
-            error: function (res) {
+        $form = $(this);
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action')
+            data: {'fileSize': file.size, 'fileType': file.type, 'fileName': file.name}
+        }).fail(function (res) {
                 showFlash(JSON.parse(res.responseText).error, 'danger');
-            },
-            success: function (res) {
+        }).done(function (res) {
                 getTaskResult(res.task_id, uploadFile);
-            }
         });
     }
     return false;

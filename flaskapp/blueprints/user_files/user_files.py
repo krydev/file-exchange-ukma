@@ -37,22 +37,18 @@ def list_files():
 @files_bp.route('/upload', methods=['POST'])
 @jwt_required
 def upload_file():
-    if "file" not in request.files:
-        return jsonify({'error': 'No file has been selected'}), 400
-
-    file = request.files["file"]
-
     # There is no file selected to upload
-    if file.filename == "":
+    filename = request.form['fileName']
+    if filename == "":
         return jsonify({'error': 'No file has been selected'}), 400
 
     if int(request.form['fileSize']) > app.config["MAX_FILE_SIZE"]:
         return jsonify({'error': 'The file is too large'}), 422
 
     # File is selected, upload to S3 send task id
-    file.filename = secure_filename(file.filename)
+    filename = secure_filename(filename)
     object_name = utils.encode_key(
-        utils.generate_obj_name(generate_uuid_str(), file.filename, get_jwt_identity())
+        utils.generate_obj_name(generate_uuid_str(), filename, get_jwt_identity())
     )
     # file.seek(0)
     job = q.enqueue(utils.request_json,'PUT',
