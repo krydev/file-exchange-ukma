@@ -1,8 +1,3 @@
-import base64
-import json
-import uuid
-
-import requests
 from flask_jwt_extended import get_raw_jwt, jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename, redirect
 
@@ -10,7 +5,7 @@ from flaskapp import utils, q
 from flaskapp.api import api
 from flaskapp.api.s3_utils import FileRes, FileListRes
 
-from flask import request, current_app as app, render_template, flash, make_response, jsonify
+from flask import request, current_app as app, render_template, jsonify
 from flaskapp.blueprints.user_files import files_bp
 from flaskapp.utils import generate_uuid_str, humansize
 
@@ -45,12 +40,10 @@ def upload_file():
     if int(request.form['fileSize']) > app.config["MAX_FILE_SIZE"]:
         return jsonify({'error': 'The file is too large'}), 422
 
-    # File is selected, upload to S3 send task id
     filename = secure_filename(filename)
     object_name = utils.encode_key(
         utils.generate_obj_name(generate_uuid_str(), filename, get_jwt_identity())
     )
-    # file.seek(0)
     job = q.enqueue(utils.request_json,'PUT',
                     url=f'{app.config["BASE_URL"]}{api.url_for(FileRes, key=object_name)}',
                     data=request.form, cookies=request.cookies)
@@ -60,7 +53,6 @@ def upload_file():
 @files_bp.route('/myfiles/<string:key>/download')
 @jwt_required
 def download_file(key):
-    # uuid.UUID(file_id)
     job = q.enqueue(utils.request_json, 'GET',
                     url=f'{app.config["BASE_URL"]}{api.url_for(FileRes, key=key)}',
                     cookies=request.cookies,

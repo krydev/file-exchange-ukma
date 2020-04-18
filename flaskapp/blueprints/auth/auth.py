@@ -1,7 +1,6 @@
-import requests
-from flask import request, jsonify, redirect, make_response, render_template, flash, current_app as app, url_for
+from flask import request, redirect, make_response, render_template, flash,url_for
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, \
-    jwt_refresh_token_required, get_jwt_identity, unset_jwt_cookies, unset_access_cookies, get_raw_jwt, jwt_required
+    jwt_refresh_token_required, get_jwt_identity, unset_jwt_cookies, unset_access_cookies,  jwt_required
 
 from flaskapp import db, jwt
 from flaskapp.blueprints.auth import auth_bp
@@ -86,13 +85,8 @@ def invalid_token_callback(callback):
 
 @jwt.expired_token_loader
 def expired_token_callback(callback):
-    # Expired auth header
-    # cookies = request.cookies
-    # del cookies[app.config['JWT_ACCESS_COOKIE_NAME']]
-    # resp = requests.get(f'{app.config["BASE_URL"]}{url_for("auth.refresh")}', cookies=cookies)
     res = make_response(redirect(f'{url_for("auth.refresh")}'))
     unset_access_cookies(res)
-    # res.cookies = resp.cookies
     return res
 
 

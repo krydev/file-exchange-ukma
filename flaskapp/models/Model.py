@@ -1,28 +1,6 @@
-from datetime import datetime
-from sqlalchemy.dialects.postgresql import UUID
-import uuid
-
 from werkzeug.security import check_password_hash
 
 from flaskapp import db
-
-#
-# class UserFile(db.Model):
-#
-#     __tablename__ = 'files'
-#
-#     # id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-#     id = db.Column(db.String, primary_key=True, default=generate_uuid_str)
-#     file_name = db.Column(db.String, nullable=False)
-#     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     # user_id = db.Column(db.Integer,
-#     #                     db.ForeignKey('users.id', ondelete="CASCADE", onupdate="CASCADE"),
-#     #                     nullable=False
-#     #                 )
-#     # user = db.relationship('User', backref='files', lazy=True)
-#     # , user_id = {self.user_id}
-#     def __repr__(self):
-#         return f'File<file_name={self.file_name}, created_at={self.created_at}>'
 
 
 class User(db.Model):
